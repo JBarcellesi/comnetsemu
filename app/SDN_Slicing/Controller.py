@@ -23,16 +23,17 @@ class TrafficSlicing(app_manager.RyuApp):
 
         # outport = self.mac_to_port[dpid][mac_address]
         self.mac_to_port = {
-            1: {"00:00:00:00:00:01": 1, "00:00:00:00:00:02": 2, "00:00:00:00:00:03": 3, "00:00:00:00:00:04": 4},
-            2: {"00:00:00:00:00:01": 1, "00:00:00:00:00:02": 1, "00:00:00:00:00:03": 1, "00:00:00:00:00:04": 1},
-            4: {"00:00:00:00:00:05": 4, "00:00:00:00:00:06": 5, "00:00:00:00:00:07": 6},
+            1: {"00:00:00:00:00:01": 1, "00:00:00:00:00:02": 2, "00:00:00:00:00:03": 3, "00:00:00:00:00:04":6, "00:00:00:00:00:05":6},
+            2: {"00:00:00:00:00:01": 1, "00:00:00:00:00:02": 1, "00:00:00:00:00:03": 1},
+            4: {"00:00:00:00:00:06": 4, "00:00:00:00:00:07": 5, "00:00:00:00:00:08": 6},
+            5: {"00:00:00:00:00:03": 3, "00:00:00:00:00:04": 1, "00:00:00:00:00:05":2},
         }
         self.slice_TCport = 9999
 
         # outport = self.slice_ports[dpid][slicenumber]
-        self.slice_ports = {1: {1: 5, 2: 5, 3: 6}, 2: {1: 2, 2: 3}, 4: {1: 2, 2: 2, 3: 3}}
+        self.slice_ports = {1: {1: 4, 2: 4, 3: 5}, 2: {1: 2, 2: 3}, 4: {1: 2, 2: 2, 3: 3}}
         self.end_swtiches = [1, 4]
-        self.switch_list=[1, 2, 3, 4]
+        self.switch_list=[1, 2, 3, 4, 5]
        # self.updateRules_thread = hub.spawn(self.updateRules)
 
     #def updateRules(self):
@@ -45,7 +46,7 @@ class TrafficSlicing(app_manager.RyuApp):
     #        ofp_parser = datapath.ofproto_parser
     #        req = ofp_parser.OFPTableStatsRequest(datapath, 0)
     #        datapath.send_msg(req)
-        
+
     #    @set_ev_cls(ofp_event.EventOFPTableStatsReply, MAIN_DISPATCHER)
     #    def table_stats_reply_handler(self, ev):
     #        tables = []
@@ -72,7 +73,7 @@ class TrafficSlicing(app_manager.RyuApp):
         ]
         self.add_flow(datapath, 0, match, actions)
 
-	
+
     def add_flow(self, datapath, priority, match, actions):
         ofproto = datapath.ofproto
         parser = datapath.ofproto_parser
@@ -114,7 +115,7 @@ class TrafficSlicing(app_manager.RyuApp):
             return
         dst = eth.dst
         src = eth.src
-        
+
         ip=pkt.protocols[1]
         ip_dst=ip.dst
 
