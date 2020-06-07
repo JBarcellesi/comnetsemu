@@ -3,6 +3,9 @@
 #Server is listening on a specific port
 #It can send back date, time or both basing of the host request
 
+#! /usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import socket
 import datetime
 
@@ -27,17 +30,22 @@ while True:
         # Receive the data in small chunks and retransmit it
         while True:
             data = connection.recv(16)
+            #test = 'test'
+            #test = str(datetime.datetime(2,2,2,2,2,2))
+            test = str(datetime.datetime.now())
             print("received {!r}".format(data))
-            if data == "send date":
+            if data:
                 print("sending date to the client")
-                connection.sendall(datetime.date)
-            elif data == "send hour":
-                print("sending date to the client)
-                connection.sendall(datetime.time)
-            elif data == "send date and hour":
-                print("sending date and hour to the client")
-                connection.sendall(datetime.datetime.now)
-            else
+                connection.sendall(data)
+                #connection.send(b'ciao')
+                connection.sendall(str.encode(test))
+            #elif data == "send hour":
+            #    print("sending date to the client)
+            #    connection.sendall(datetime.time)
+            #elif data == "send date and hour":
+            #    print("sending date and hour to the client")
+            #    connection.sendall(datetime.datetime.now)
+            else:
                 print("no data from", client_address)
                 break
 
